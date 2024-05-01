@@ -1,16 +1,42 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BloodType } from "../../blood_type/entities/blood_type.entity";
+import { Button } from "../../button/entities/button.entity";
+import { Alergy } from "../../alergy/entities/alergy.entity";
+import { Ailment } from "../../ailment/entities/ailment.entity";
 
 @Entity()
 export class User {
 
-    @PrimaryColumn()
-    User_ID: number;
+  @PrimaryGeneratedColumn()
+  User_ID: number;
 
-    @Column()
-    DNI: string;
-    
-    Username: string;
-    Name: string;
-    Surname: string;
-    Password: string;
+  @Column('')
+  DNI: string;
+
+  @Column()
+  Username: string;
+
+  @Column()
+  Name: string;
+
+  @Column()
+  Surname: string;
+
+  @Column()
+  Password: string;
+
+  // Photo
+  @ManyToOne(() => BloodType, (bloodType) => bloodType.users)
+  Blood_Type: BloodType;
+
+  @OneToMany(() => Button, (button) => button.User)
+  Buttons: Button[];
+
+  @ManyToMany(() => Alergy)
+  @JoinTable()
+  Alergies: Alergy[];
+
+  @ManyToMany(() => Ailment)
+  @JoinTable()
+  Ailments: Ailment[];
 }

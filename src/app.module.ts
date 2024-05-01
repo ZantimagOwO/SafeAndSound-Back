@@ -4,6 +4,12 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { BloodTypeModule } from './blood_type/blood_type.module';
+import { CallModule } from './call/call.module';
+import { ButtonModule } from './button/button.module';
+import { AlergyModule } from './alergy/alergy.module';
+import { AilmentModule } from './ailment/ailment.module';
+import { PhoneModule } from './phone/phone.module';
 
 @Module({
   imports: [
@@ -18,6 +24,12 @@ import { join } from 'path';
       password: '12341234',
       database: 'SafeAndSound',
     }),
+    BloodTypeModule,
+    CallModule,
+    ButtonModule,
+    AlergyModule,
+    AilmentModule,
+    PhoneModule,
   ],
   controllers: [AppController],
   providers: [AppService],
