@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Phone) private phoneRepository: Repository<Phone>,
   ) {}
 
   create(createUserDto: CreateUserDto) {
@@ -34,6 +35,18 @@ export class UsersService {
     console.log(res)
 
     return res[0].Phones
+  }
+
+  async findProtectors(phone: string) {
+    const res = await this.phoneRepository.find({
+      relations: ['Users'],
+      where: { Phone: phone },
+    });
+
+    console.log(res)
+
+    return res[0];
+
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

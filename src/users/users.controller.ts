@@ -27,6 +27,11 @@ export class UsersController {
     return this.usersService.findProtected(+User_ID);
   }
 
+  @Get('protectors/:phone')
+  findProtectors(  @Param('phone') phone: string) {
+    return this.usersService.findProtectors(phone);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);

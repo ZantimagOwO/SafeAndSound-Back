@@ -41,7 +41,7 @@ export class User {
   @JoinTable()
   Ailments: Ailment[];
 
-  @ManyToMany(() => Phone)
+  @ManyToMany(() => Phone, phone => phone.Users)
   @JoinTable()
   Phones: Phone[];
 }

@@ -13,6 +13,6 @@ export class Phone {
   @OneToMany(() => Call, (call) => call.Phone)
   Calls: Call[];
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, user => user.Phones)
   Users: User[]
 }
