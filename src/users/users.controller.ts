@@ -22,6 +22,11 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
+  @Get('protected/:User_ID')
+  findProtected(  @Param('User_ID') User_ID: string) {
+    return this.usersService.findProtected(+User_ID);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);

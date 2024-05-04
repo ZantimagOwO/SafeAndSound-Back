@@ -3,6 +3,7 @@ import { BloodType } from "../../blood_type/entities/blood_type.entity";
 import { Button } from "../../button/entities/button.entity";
 import { Alergy } from "../../alergy/entities/alergy.entity";
 import { Ailment } from "../../ailment/entities/ailment.entity";
+import { Phone } from "../../phone/entities/phone.entity";
 
 @Entity()
 export class User {
@@ -39,4 +40,8 @@ export class User {
   @ManyToMany(() => Ailment)
   @JoinTable()
   Ailments: Ailment[];
+
+  @ManyToMany(() => Phone)
+  @JoinTable()
+  Phones: Phone[];
 }
