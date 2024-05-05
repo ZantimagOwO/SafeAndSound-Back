@@ -19,7 +19,7 @@ export class UsersService {
 
   async addProtector(phone: string){
 
-    let existe = this.phoneRepository.findOne({ Phone: phone });
+    let existe = this.phoneRepository.findOne({ where: { Phone: phone} });
 
   }
 
