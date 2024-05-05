@@ -17,6 +17,12 @@ export class UsersService {
     return 'This action adds a new user';
   }
 
+  async addProtector(phone: string){
+
+    let existe = this.phoneRepository.findOne({ Phone: phone });
+
+  }
+
   findAll() {
     return this.userRepository.find();
   }
@@ -28,24 +34,26 @@ export class UsersService {
   async findProtected(id: number) {
     const res = await this.userRepository
       .find({
-        relations: ['Phones'],
+        relations: ['Protected'],
         where: { User_ID: id },
       })
 
     console.log(res)
 
-    return res[0].Phones
+    return res[0].Protected
   }
 
   async findProtectors(phone: string) {
-    const res = await this.phoneRepository.find({
-      relations: ['Users'],
-      where: { Phone: phone },
+    const users = await this.userRepository.find({
+      relations: ['Protected', 'Phone'],
+      where: { Protected: { Phone: phone } },
     });
+
+    const res = users.map((user) => user.Phone);
 
     console.log(res)
 
-    return res[0];
+    return res;
 
   }
 

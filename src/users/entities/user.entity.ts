@@ -26,7 +26,9 @@ export class User {
   @Column()
   Password: string;
 
-  // Photo
+  @ManyToOne(() => Phone, (phone) => phone.Owner)
+  Phone: Phone;
+
   @ManyToOne(() => BloodType, (bloodType) => bloodType.users)
   Blood_Type: BloodType;
 
@@ -41,7 +43,7 @@ export class User {
   @JoinTable()
   Ailments: Ailment[];
 
-  @ManyToMany(() => Phone, phone => phone.Users)
+  @ManyToMany(() => Phone, phone => phone.Protectors)
   @JoinTable()
-  Phones: Phone[];
+  Protected: Phone[];
 }

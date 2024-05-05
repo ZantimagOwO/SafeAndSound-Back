@@ -12,6 +12,12 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('protector')
+  addProtector(phone: string){
+
+    return this.usersService.addProtector(phone);
+  }
+
   @Get()
   findAll() {
     return this.usersService.findAll();
