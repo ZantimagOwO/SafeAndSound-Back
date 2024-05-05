@@ -57,6 +57,19 @@ export class UsersService {
 
   }
 
+  async login(username: string, password: string): Promise<number> {
+    const user = await this.userRepository.findOne({
+      where: { Username: username, Password: password },
+      select: ["User_ID"]  
+    });
+    if (user) {
+      console.log(user.User_ID);
+      return user.User_ID;
+    } else {
+      return 0;
+    }
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

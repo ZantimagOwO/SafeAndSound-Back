@@ -38,6 +38,12 @@ export class UsersController {
     return this.usersService.findProtectors(phone);
   }
 
+  @Post('login')
+  login(@Body() body) {
+    console.log(body)
+    return this.usersService.login(body.username, body.password);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
