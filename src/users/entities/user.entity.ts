@@ -11,7 +11,7 @@ export class User {
   @PrimaryGeneratedColumn()
   User_ID: number;
 
-  @Column('')
+  @Column()
   DNI: string;
 
   @Column()
@@ -43,7 +43,7 @@ export class User {
   @JoinTable()
   Ailments: Ailment[];
 
-  @ManyToMany(() => Phone, phone => phone.Protectors)
+  @ManyToMany(() => Phone, phone => phone.Protected)
   @JoinTable()
-  Protected: Phone[];
+  Protectors: Phone[];
 }

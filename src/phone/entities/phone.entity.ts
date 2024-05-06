@@ -16,6 +16,6 @@ export class Phone {
   @OneToMany(() => User, (user) => user.Phone)
   Owner: User;
 
-  @ManyToMany(() => User, (user) => user.Protected)
-  Protectors: User[];
+  @ManyToMany(() => User, (user) => user.Protectors)
+  Protected: User[];
 }

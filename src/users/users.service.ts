@@ -17,10 +17,29 @@ export class UsersService {
     return 'This action adds a new user';
   }
 
-  async addProtector(phone: string){
+  async addProtector(User_ID: number, phone: string){
+      // Buscar si el teléfono ya existe en la base de datos
+      let existingPhone = await this.phoneRepository.findOne({
+        where: { Phone: phone },
+      });
 
-    let existe = this.phoneRepository.findOne({ where: { Phone: phone} });
+      if (existingPhone === null || existingPhone === undefined) {
+        let p: Phone = new Phone();
+        p.Phone = phone;
 
+        existingPhone = await this.phoneRepository.save(p);
+      }
+
+      let user = await this.userRepository.findOne({
+        where: { User_ID: User_ID },
+        relations: ['Protectors'],
+      });
+
+      user.Protectors.push(existingPhone);
+
+      this.userRepository.save(user);
+
+      return 1
   }
 
   findAll() {
@@ -31,29 +50,29 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
-  async findProtected(id: number) {
-    const res = await this.userRepository
-      .find({
-        relations: ['Protected'],
-        where: { User_ID: id },
-      })
-
-    console.log(res)
-
-    return res[0].Protected
-  }
-
-  async findProtectors(phone: string) {
+  async findProtected(phone: string) {
     const users = await this.userRepository.find({
-      relations: ['Protected', 'Phone'],
-      where: { Protected: { Phone: phone } },
+      relations: ['Protectors', 'Phone'],
+      where: { Protectors: { Phone: phone } },
     });
 
     const res = users.map((user) => user.Phone);
 
-    console.log(res)
+    console.log(res);
 
     return res;
+  }
+
+  async findProtectors(id: number) {
+    
+    const res = await this.userRepository.find({
+      relations: ['Protectors'],
+      where: { User_ID: id },
+    });
+
+    console.log(res);
+
+    return res[0].Protectors;
 
   }
 

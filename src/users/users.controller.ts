@@ -12,10 +12,13 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Post('protector')
-  addProtector(phone: string){
+  @Post('/addProtector/:id/:phone')
+  addProtector(@Param('id') id: string, @Param('phone') phone: string){
 
-    return this.usersService.addProtector(phone);
+    console.log(id)
+    console.log(phone)
+
+    return this.usersService.addProtector(+id, phone);
   }
 
   @Get()
@@ -28,14 +31,16 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
-  @Get('protected/:User_ID')
-  findProtected(  @Param('User_ID') User_ID: string) {
-    return this.usersService.findProtected(+User_ID);
+  @Get('protected/:phone')
+  findProtected(  @Param('phone') phone: string) {
+    console.log(phone)
+    return this.usersService.findProtected(phone);
   }
 
-  @Get('protectors/:phone')
-  findProtectors(  @Param('phone') phone: string) {
-    return this.usersService.findProtectors(phone);
+  @Get(':id/protectors')
+  findProtectors(  @Param('id') id: string) {
+    console.log(id)
+    return this.usersService.findProtectors(+id);
   }
 
   @Post('login')
