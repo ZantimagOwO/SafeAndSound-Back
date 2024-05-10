@@ -38,6 +38,7 @@ export class UsersService {
       user.Protectors.push(existingPhone);
 
       this.userRepository.save(user);
+      this.phoneRepository.save(existingPhone);
 
       return 1
   }
@@ -74,6 +75,24 @@ export class UsersService {
 
     return res[0].Protectors;
 
+  }
+
+  async removeProtector(id: number, phoneNumber: string) {
+
+    let user = await this.userRepository.findOne({
+      where: { User_ID: id },
+      relations: ['Protectors']
+    })
+
+    let phone = await this.phoneRepository.findOne({
+      where: { Phone: phoneNumber }
+    })
+
+    user.Protectors = user.Protectors.filter((p) => p.Phone !== phone.Phone);
+
+    this.userRepository.save(user);
+
+    return 1;
   }
 
   async login(username: string, password: string): Promise<number> {

@@ -49,6 +49,11 @@ export class UsersController {
     return this.usersService.login(body.username, body.password);
   }
 
+  @Post('sendProtectorRequest/:id/:phone')
+  sendProtectorRequest(@Param('id') id: string, @Param('phone') phone: string) {
+    
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
@@ -57,5 +62,10 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @Delete('removeProtector/:id/:phone')
+  removeProtector(@Param('id') id: string, @Param('phone') phone: string) {
+    return this.usersService.removeProtector(+id, phone)
   }
 }
