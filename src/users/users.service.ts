@@ -95,16 +95,17 @@ export class UsersService {
     return 1;
   }
 
-  async login(username: string, password: string): Promise<number> {
+  async login(username: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { Username: username, Password: password },
-      select: ["User_ID"]  
+      select: ["User_ID", "Phone"],
+      relations: ['Phone']  
     });
     if (user) {
       console.log(user.User_ID);
-      return user.User_ID;
+      return user
     } else {
-      return 0;
+      return null;
     }
   }
 
