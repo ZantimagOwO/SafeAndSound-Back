@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Call } from '../../call/entities/call.entity';
 import { User } from '../../users/entities/user.entity';
 
@@ -13,7 +13,7 @@ export class Phone {
   @OneToMany(() => Call, (call) => call.Phone)
   Calls: Call[];
 
-  @OneToMany(() => User, (user) => user.Phone)
+  @OneToOne(() => User, (user) => user.Phone)
   Owner: User;
 
   @ManyToMany(() => User, (user) => user.Protectors)

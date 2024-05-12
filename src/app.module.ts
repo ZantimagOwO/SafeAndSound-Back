@@ -10,6 +10,7 @@ import { ButtonModule } from './button/button.module';
 import { AlergyModule } from './alergy/alergy.module';
 import { AilmentModule } from './ailment/ailment.module';
 import { PhoneModule } from './phone/phone.module';
+import { DiabetesModule } from './diabetes/diabetes.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PhoneModule } from './phone/phone.module';
     AlergyModule,
     AilmentModule,
     PhoneModule,
+    DiabetesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
