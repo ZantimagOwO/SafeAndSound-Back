@@ -42,7 +42,6 @@ export class UsersService {
 
     let diabetes = await this.diabetesRepository.findOneBy({Diabetes_ID: user.Diabetes.Diabetes_ID})
     user.Diabetes = diabetes
-    
     console.log('creando usuario: ' + JSON.stringify(user),);
 
     await this.userRepository.save(user);

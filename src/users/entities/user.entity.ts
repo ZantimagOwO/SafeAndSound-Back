@@ -39,11 +39,11 @@ export class User {
   @OneToMany(() => Button, (button) => button.User)
   Buttons: Button[];
 
-  @ManyToMany(() => Alergy)
+  @ManyToMany(() => Alergy, { cascade: true })
   @JoinTable()
   Alergies: Alergy[];
 
-  @ManyToMany(() => Ailment)
+  @ManyToMany(() => Ailment, { cascade: true })
   @JoinTable()
   Ailments: Ailment[];
 
@@ -70,18 +70,31 @@ export class User {
       user.Phone = p;
     }
 
-    if(json.Diabetes != "4"){
+    if (json.Diabetes != '4') {
       let d = new Diabetes();
       d.Diabetes_ID = json.Diabetes;
       user.Diabetes = d;
     }
 
-    // if(json.Ailments.length > 0){
-    //   ailments: Ailment[json.Ailments.length];
-    //   json.Ailments.forEach(str => {
-    //     ailment = new Ailment();
-    //   });
-    // }
+    let ailments: Ailment[] = [];
+    if (json.Ailments.length > 0) {
+      json.Ailments.forEach((str) => {
+        let ailment = new Ailment();
+        ailment.Ailment = str;
+        ailments.push(ailment);
+      });
+    }
+    user.Ailments = ailments;
+
+    let alergies: Alergy[] = [];
+    if (json.Alergies.length > 0) {
+      json.Alergies.forEach((str) => {
+        let alergy = new Alergy();
+        alergy.Alergy = str;
+        alergies.push(alergy);
+      });
+    }
+    user.Alergies = alergies;
 
     return user;
   }

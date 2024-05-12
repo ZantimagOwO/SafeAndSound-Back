@@ -7,7 +7,4 @@ export class Alergy {
 
   @Column()
   Alergy: string;
-
-  @Column()
-  Alergy_Information: string;
 }
