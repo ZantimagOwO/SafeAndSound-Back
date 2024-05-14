@@ -8,6 +8,9 @@ import { Diabetes } from "../../diabetes/entities/diabetes.entity";
 
 @Entity()
 export class User {
+
+  static readonly BLOOD_GROUP_TYPES = ['A', 'B', 'AB', 'O'];
+
   @PrimaryGeneratedColumn()
   User_ID: number;
 
@@ -25,6 +28,15 @@ export class User {
 
   @Column()
   Password: string;
+
+  @Column({ nullable: true })
+  diaNac: number;
+
+  @Column({ nullable: true })
+  mesNac: number;
+
+  @Column({ nullable: true })
+  anyoNac: number;
 
   @OneToOne(() => Phone, (phone) => phone.Owner)
   @JoinColumn()
@@ -60,7 +72,7 @@ export class User {
     user.Password = json.Password;
 
     let bType = new BloodType();
-    bType.Blood_Group = json.Blood_Group;
+    bType.Blood_Group = User.BLOOD_GROUP_TYPES[json.Blood_Group];
     bType.RH = json.RH;
     user.Blood_Type = bType;
 
@@ -95,6 +107,10 @@ export class User {
       });
     }
     user.Alergies = alergies;
+
+    user.diaNac = json.dia;
+    user.mesNac = json.mes;
+    user.anyoNac = json.anyo;
 
     return user;
   }

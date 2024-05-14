@@ -83,17 +83,27 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
-  async findProtected(phone: string) {
-    const users = await this.userRepository.find({
+  async findProtected(user_id: number) {
+
+    // Cual es mi telefono?
+    let userLogueado = await this.userRepository.findOne({
+      where: { User_ID: user_id },
+      relations: ['Phone'],
+    })
+
+    let phone = userLogueado.Phone;
+
+    // Qué usuarios avisaran a ese telefono al presionar el boton?
+    let usuarioProtegidos = await this.userRepository.find({
+      where: { Protectors: { Phone: phone.Phone } },
       relations: ['Protectors', 'Phone'],
-      where: { Protectors: { Phone: phone } },
-    });
+    })
 
-    const res = users.map((user) => user.Phone);
+    // Cuales son sus telefonos?
+    let resp = usuarioProtegidos.map(u => u.Phone)
 
-    console.log(res);
+    return resp;
 
-    return res;
   }
 
   async findProtectors(id: number) {
@@ -131,6 +141,7 @@ export class UsersService {
     });
     if (user) {
       console.log(user);
+      user.Password = null;
       return user;
     } else {
       return null;
