@@ -40,13 +40,17 @@ export class UsersService {
     });
     user.Blood_Type = bType;
 
+    if(user.Diabetes != null){
     let diabetes = await this.diabetesRepository.findOneBy({Diabetes_ID: user.Diabetes.Diabetes_ID})
     user.Diabetes = diabetes
+    }
+  
     console.log('creando usuario: ' + JSON.stringify(user),);
 
     await this.userRepository.save(user);
     console.log('usuario registrado correctamente');
     return 'usuario registrado correctamente';
+
   }
 
   async addProtector(User_ID: number, phone: string) {
