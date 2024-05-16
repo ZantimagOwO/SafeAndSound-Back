@@ -137,7 +137,7 @@ export class UsersService {
   async login(username: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { Username: username, Password: password },
-      relations: ['Phone', 'Ailments', 'Alergies', 'Blood_Type'],
+      relations: ['Phone', 'Ailments', 'Alergies', 'Blood_Type', 'Diabetes'],
     });
     if (user) {
       console.log(user);

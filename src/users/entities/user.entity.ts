@@ -82,7 +82,7 @@ export class User {
       user.Phone = p;
     }
 
-    if (json.Diabetes != '4') {
+    if (json.Diabetes != 4) {
       let d = new Diabetes();
       d.Diabetes_ID = json.Diabetes;
       user.Diabetes = d;
