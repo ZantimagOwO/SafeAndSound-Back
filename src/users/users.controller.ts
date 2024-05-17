@@ -57,11 +57,6 @@ export class UsersController {
     @Param('phone') phone: string,
   ) {}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
@@ -70,5 +65,12 @@ export class UsersController {
   @Delete('removeProtector/:id/:phone')
   removeProtector(@Param('id') id: string, @Param('phone') phone: string) {
     return this.usersService.removeProtector(+id, phone);
+  }
+
+  @Patch()
+  update(@Body() userData) {
+    console.log(userData);
+    let user = User.jsonToUser(userData);
+    return this.usersService.update(user);
   }
 }

@@ -14,7 +14,7 @@ export class User {
   @PrimaryGeneratedColumn()
   User_ID: number;
 
-  @Column({ nullable: true })
+  @Column({ unique: true })
   DNI: string;
 
   @Column()

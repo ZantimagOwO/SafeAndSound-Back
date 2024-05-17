@@ -45,7 +45,7 @@ export class UsersService {
     user.Diabetes = diabetes
     }
   
-    console.log('creando usuario: ' + JSON.stringify(user),);
+    console.log('creando usuario: ' + JSON.stringify(user));
 
     await this.userRepository.save(user);
     console.log('usuario registrado correctamente');
@@ -152,8 +152,37 @@ export class UsersService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(user: User) {
+
+    let phone = await this.phoneRepository.findOneBy({
+      Phone: user.Phone.Phone,
+    });
+
+    let tempUser = await this.userRepository.findOneBy({DNI: user.DNI});
+    user.User_ID = tempUser.User_ID;
+
+    phone = new Phone();
+    phone.Phone = user.Phone.Phone;
+    await this.phoneRepository.save(phone);
+    user.Phone = phone;
+
+    let bType = await this.bloodTypeRepository.findOneBy({
+      Blood_Group: user.Blood_Type.Blood_Group,
+      RH: user.Blood_Type.RH,
+    });
+    user.Blood_Type = bType;
+
+    if (user.Diabetes != null) {
+      let diabetes = await this.diabetesRepository.findOneBy({
+        Diabetes_ID: user.Diabetes.Diabetes_ID,
+      });
+      user.Diabetes = diabetes;
+    }
+
+    console.log("old user: " + JSON.stringify(user))
+    let newUser = await this.userRepository.save(user);
+    console.log("new user: " + JSON.stringify(newUser))
+    return "usuario actualizado correctamente"
   }
 
   remove(id: number) {
