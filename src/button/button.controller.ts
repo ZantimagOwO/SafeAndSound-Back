@@ -7,9 +7,10 @@ import { UpdateButtonDto } from './dto/update-button.dto';
 export class ButtonController {
   constructor(private readonly buttonService: ButtonService) {}
 
-  @Post()
-  create(@Body() createButtonDto: CreateButtonDto) {
-    return this.buttonService.create(createButtonDto);
+  @Post('create')
+  create(@Body() body) {
+    console.log(body);
+    return this.buttonService.create(body); 
   }
 
   @Get()

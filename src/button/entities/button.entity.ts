@@ -8,6 +8,12 @@ export class Button {
   Button_ID: number;
 
   @Column()
+  Button_Name: string;
+
+  @Column()
+  Button_Tlf: string;
+
+  @Column()
   Protector_Message: string;
 
   @Column()
@@ -18,4 +24,5 @@ export class Button {
 
   @ManyToMany(() => Phone)
   Phones: Phone[];
+  
 }
