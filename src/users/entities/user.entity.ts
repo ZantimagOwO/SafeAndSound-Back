@@ -76,6 +76,8 @@ export class User {
     bType.RH = json.RH;
     user.Blood_Type = bType;
 
+    console.log("bg found: " + JSON.stringify(bType));
+
     if (json.Phone) {
       let p = new Phone();
       p.Phone = json.Phone;

@@ -29,6 +29,12 @@ export class UsersService {
       return 'Telefono ya registrado';
     }
 
+    let dniExists = await this.userRepository.exists({ where : {DNI: user.DNI} });
+
+    if(dniExists) {
+      return "Ya existe un usuario con ese DNI"
+    }
+
     phone = new Phone();
     phone.Phone = user.Phone.Phone;
     await this.phoneRepository.save(phone);
@@ -39,6 +45,8 @@ export class UsersService {
       RH: user.Blood_Type.RH,
     });
     user.Blood_Type = bType;
+
+    console.log("blood type: " + JSON.stringify(user.Blood_Type))
 
     if(user.Diabetes != null){
     let diabetes = await this.diabetesRepository.findOneBy({Diabetes_ID: user.Diabetes.Diabetes_ID})
@@ -60,7 +68,7 @@ export class UsersService {
     });
 
     if (existingPhone === null || existingPhone === undefined) {
-      let p: Phone = new Phone();
+      let p = new Phone();
       p.Phone = phone;
 
       existingPhone = await this.phoneRepository.save(p);
@@ -71,7 +79,13 @@ export class UsersService {
       relations: ['Protectors'],
     });
 
+    if(user === null || user === undefined) {
+      return "No existe ese usuario"
+    }
+
     user.Protectors.push(existingPhone);
+
+    console.log(user.Protectors)
 
     this.userRepository.save(user);
     this.phoneRepository.save(existingPhone);
@@ -159,6 +173,9 @@ export class UsersService {
     });
 
     let tempUser = await this.userRepository.findOneBy({DNI: user.DNI});
+    if(user == null){
+      return "No hay ningun usuario con ese DNI"
+    }
     user.User_ID = tempUser.User_ID;
 
     phone = new Phone();
