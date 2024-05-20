@@ -43,7 +43,7 @@ export class Button {
     let b: Button = new Button();
 
     b.Button_Name = json.nombreBoton;
-    b.Color = json.electedColor;
+    b.Color = json.selectedColor;
     b.Emergency_Message = json.mensajeEmergenciaNumero;
     b.Protector_Message = json.mensajeEmergenciaProtectores;
     b.Button_Tlf = json.telefonoEmergencia;
