@@ -157,13 +157,16 @@ export class UsersService {
       where: { Username: username, Password: password },
       relations: ['Phone', 'Ailments', 'Alergies', 'Blood_Type', 'Diabetes'],
     });
-    if (user) {
-      console.log(user);
-      user.Password = null;
-      return user;
-    } else {
+
+    console.log(user);
+
+    if (!user) {
       return null;
     }
+    
+    user.Password = null;
+    return user;
+    
   }
 
   async update(user: User) {
