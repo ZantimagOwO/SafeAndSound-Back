@@ -17,8 +17,8 @@ export class ButtonService {
   ) {}
 
   async create(button: Button) {
-    let btn = await this.buttonRespository.create(button)
-    console.log("Created button: " + btn)
+    let btn = this.buttonRespository.create(button)
+    console.log("Created button: " + JSON.stringify(btn))
     return 1
   }
 

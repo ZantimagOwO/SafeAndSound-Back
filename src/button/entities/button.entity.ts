@@ -40,7 +40,7 @@ export class Button {
 //   protectores: [ 2, 54 ]
 // }
 
-    let b: Button;
+    let b: Button = new Button();
 
     b.Button_Name = json.nombreBoton;
     b.Color = json.electedColor;
