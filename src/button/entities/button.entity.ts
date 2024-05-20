@@ -42,6 +42,10 @@ export class Button {
 
     let b: Button = new Button();
 
+    let u = new User()
+    u.User_ID = json.userID
+
+    b.User = u
     b.Button_Name = json.nombreBoton;
     b.Color = json.selectedColor;
     b.Emergency_Message = json.mensajeEmergenciaNumero;

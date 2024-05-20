@@ -32,8 +32,8 @@ export class ButtonService {
 
   async findByUser(id: number){
     let buttons = await this.buttonRespository.find({
-      where: { User: {User_ID: id} },
-      relations: ['Phones', 'User'],
+      // where: { User: {User_ID: id} },
+      // relations: ['Phones', 'User'],
     });
     
     return buttons;
