@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Phone } from '../../phone/entities/phone.entity';
 
@@ -19,10 +19,11 @@ export class Button {
   @Column()
   Emergency_Message: string;
 
-  @ManyToOne(() => User, (user) => user.Buttons)
+  @ManyToOne(() => User, (user) => user.Buttons, {eager: true})
   User: User;
 
-  @ManyToMany(() => Phone)
+  @ManyToMany(() => Phone, (phone) => phone.UsedBy, {eager: true})
+  @JoinTable()
   Phones: Phone[];
 
   @Column()
@@ -61,6 +62,8 @@ export class Button {
 
       protectores.push(p)
     }
+
+    b.Phones = protectores
 
     return b;
   }

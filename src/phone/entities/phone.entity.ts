@@ -18,4 +18,7 @@ export class Phone {
 
   @ManyToMany(() => User, (user) => user.Protectors)
   Protected: User[];
+
+  @ManyToMany(()=> Phone, (Phone) => Phone.Protected)
+  UsedBy: Phone[];
 }
