@@ -35,6 +35,10 @@ export class ButtonService {
       where: { User: {User_ID: id} },
       relations: ['User', 'Phones'],
     });
+
+    buttons.map((b) => {
+      b.User = null;
+    })
     
     return buttons;
   }
