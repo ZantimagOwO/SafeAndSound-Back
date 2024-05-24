@@ -43,7 +43,9 @@ export class ButtonService {
     return buttons;
   }
 
-  update(id: number, updateButtonDto: UpdateButtonDto) {
+  update(id: number, button: Button) {
+    console.log(JSON.stringify(button))
+    this.buttonRespository.save(button)
     return `This action updates a #${id} button`;
   }
 

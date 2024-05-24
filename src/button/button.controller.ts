@@ -31,7 +31,8 @@ export class ButtonController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateButtonDto: UpdateButtonDto) {
+  update(@Param('id') id: string, @Body() body: string) {
+    let updateButtonDto = Button.jsonToButton(body);
     return this.buttonService.update(+id, updateButtonDto);
   }
 
