@@ -48,6 +48,7 @@ export class ButtonService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} button`;
+    this.buttonRespository.delete({Button_ID: id})
+    return `Boton borrado existosamente`;
   }
 }
