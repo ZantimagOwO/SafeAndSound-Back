@@ -30,10 +30,10 @@ export class ButtonController {
     return this.buttonService.findByUser(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() body: string) {
+  @Patch()
+  update(@Body() body: string) {
     let updateButtonDto = Button.jsonToButton(body);
-    return this.buttonService.update(+id, updateButtonDto);
+    return this.buttonService.update(updateButtonDto);
   }
 
   @Delete(':id')

@@ -15,7 +15,7 @@ export class UsersController {
     return this.usersService.create(user);
   }
 
-  @Post('/addProtector/:id/:phone')
+  @Get('/addProtector/:id/:phone')
   addProtector(@Param('id') id: string, @Param('phone') phone: string) {
     console.log(id);
     console.log(phone);

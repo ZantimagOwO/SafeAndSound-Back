@@ -43,10 +43,10 @@ export class ButtonService {
     return buttons;
   }
 
-  update(id: number, button: Button) {
+  update(button: Button) {
     console.log(JSON.stringify(button))
     this.buttonRespository.save(button)
-    return `This action updates a #${id} button`;
+    return 1;
   }
 
   remove(id: number) {

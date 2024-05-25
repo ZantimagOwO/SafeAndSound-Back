@@ -85,7 +85,7 @@ export class UsersService {
 
     user.Protectors.push(existingPhone);
 
-    console.log(user.Protectors)
+    console.log("Protegidos post-add: " + user.Protectors)
 
     this.userRepository.save(user);
     this.phoneRepository.save(existingPhone);
@@ -146,6 +146,8 @@ export class UsersService {
     });
 
     user.Protectors = user.Protectors.filter((p) => p.Phone !== phone.Phone);
+
+    console.log("protectores después de borrado: " + user.Protectors)
 
     this.userRepository.save(user);
 
