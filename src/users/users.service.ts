@@ -183,6 +183,13 @@ export class UsersService {
       Phone: user.Phone.Phone,
     });
 
+    if (phone === null || phone === undefined) {
+      let p = new Phone();
+      p.Phone = user.Phone.Phone;
+
+      phone = await this.phoneRepository.save(p);
+    }
+
     let tempUser = await this.userRepository.findOneBy({DNI: user.DNI});
     if(user == null){
       return "No hay ningun usuario con ese DNI"
