@@ -29,10 +29,12 @@ export class UsersService {
       return 'Telefono ya registrado';
     }
 
-    let dniExists = await this.userRepository.exists({ where : {DNI: user.DNI} });
+    let dniExists = await this.userRepository.exists({
+      where: { DNI: user.DNI },
+    });
 
-    if(dniExists) {
-      return "Ya existe un usuario con ese DNI"
+    if (dniExists) {
+      return 'Ya existe un usuario con ese DNI';
     }
 
     phone = new Phone();
@@ -46,23 +48,23 @@ export class UsersService {
     });
     user.Blood_Type = bType;
 
-    console.log("blood type: " + JSON.stringify(user.Blood_Type))
+    console.log('blood type: ' + JSON.stringify(user.Blood_Type));
 
-    if(user.Diabetes != null){
-    let diabetes = await this.diabetesRepository.findOneBy({Diabetes_ID: user.Diabetes.Diabetes_ID})
-    user.Diabetes = diabetes
+    if (user.Diabetes != null) {
+      let diabetes = await this.diabetesRepository.findOneBy({
+        Diabetes_ID: user.Diabetes.Diabetes_ID,
+      });
+      user.Diabetes = diabetes;
     }
-  
+
     console.log('creando usuario: ' + JSON.stringify(user));
 
     await this.userRepository.save(user);
     console.log('usuario registrado correctamente');
     return 'usuario registrado correctamente';
-
   }
 
   async addProtector(User_ID: number, phone: string) {
-
     // Buscar si el teléfono ya existe en la base de datos
     let existingPhone = await this.phoneRepository.findOne({
       where: { Phone: phone },
@@ -80,18 +82,24 @@ export class UsersService {
       relations: ['Protectors'],
     });
 
-    if(user === null || user === undefined) {
-      return "No existe ese usuario"
+    if (user === null || user === undefined) {
+      return 'No existe ese usuario';
     }
 
-    if(user.Protectors.includes(existingPhone)) {
-          return "<div style='color:red;width:100%;height:100%;display:flex;justify-content:center;align-items:center;font-size:50px;'>Ya eres protector de este usuario!<div>";
+    let estaRegistrado = false;
 
+    user.Protectors.forEach((p) => {
+      if (p.Phone == existingPhone.Phone) {
+        estaRegistrado = true;
+      }
+    });
+
+    if (estaRegistrado) {
+      return "<div style='color:red;width:100%;height:100%;display:flex;justify-content:center;align-items:center;font-size:50px;'>Ya eres protector de este usuario!<div>";
     }
-
     user.Protectors.push(existingPhone);
 
-    console.log("Protegidos post-add: " + user.Protectors)
+    console.log('Protectores post-add: ' + user.Protectors);
 
     this.userRepository.save(user);
     this.phoneRepository.save(existingPhone);
@@ -108,12 +116,15 @@ export class UsersService {
   }
 
   async findProtected(user_id: number) {
-
     // Cual es mi telefono?
     let userLogueado = await this.userRepository.findOne({
       where: { User_ID: user_id },
       relations: ['Phone'],
-    })
+    });
+
+    if (userLogueado === null || userLogueado === undefined) {
+      return 'No existe un usuario con ID ' + user_id;
+    }
 
     let phone = userLogueado.Phone;
 
@@ -121,13 +132,12 @@ export class UsersService {
     let usuarioProtegidos = await this.userRepository.find({
       where: { Protectors: { Phone: phone.Phone } },
       relations: ['Protectors', 'Phone'],
-    })
+    });
 
     // Cuales son sus telefonos?
-    let resp = usuarioProtegidos.map(u => u.Phone)
+    let resp = usuarioProtegidos.map((u) => u.Phone);
 
     return resp;
-
   }
 
   async findProtectors(id: number) {
@@ -153,7 +163,7 @@ export class UsersService {
 
     user.Protectors = user.Protectors.filter((p) => p.Phone !== phone.Phone);
 
-    console.log("protectores después de borrado: " + user.Protectors)
+    console.log('protectores después de borrado: ' + user.Protectors);
 
     this.userRepository.save(user);
 
@@ -171,14 +181,12 @@ export class UsersService {
     if (!user) {
       return null;
     }
-    
+
     user.Password = null;
     return user;
-    
   }
 
   async update(user: User) {
-
     let phone = await this.phoneRepository.findOneBy({
       Phone: user.Phone.Phone,
     });
@@ -190,9 +198,9 @@ export class UsersService {
       phone = await this.phoneRepository.save(p);
     }
 
-    let tempUser = await this.userRepository.findOneBy({DNI: user.DNI});
-    if(user == null){
-      return "No hay ningun usuario con ese DNI"
+    let tempUser = await this.userRepository.findOneBy({ DNI: user.DNI });
+    if (user == null) {
+      return 'No hay ningun usuario con ese DNI';
     }
     user.User_ID = tempUser.User_ID;
 
@@ -214,10 +222,14 @@ export class UsersService {
       user.Diabetes = diabetes;
     }
 
-    console.log("old user: " + JSON.stringify(user))
+    console.log('old user: ' + JSON.stringify(user));
     let newUser = await this.userRepository.save(user);
-    console.log("new user: " + JSON.stringify(newUser))
-    return "usuario actualizado correctamente"
+    let resp = await this.userRepository.findOne({
+      where: { User_ID: newUser.User_ID },
+      relations: ['Phone', 'Diabetes', 'Blood_Type', 'Alergies', 'Ailments']
+    })
+    console.log('resp: ' + JSON.stringify(resp));
+    return newUser;
   }
 
   remove(id: number) {
