@@ -62,6 +62,7 @@ export class UsersService {
   }
 
   async addProtector(User_ID: number, phone: string) {
+
     // Buscar si el teléfono ya existe en la base de datos
     let existingPhone = await this.phoneRepository.findOne({
       where: { Phone: phone },
@@ -83,6 +84,11 @@ export class UsersService {
       return "No existe ese usuario"
     }
 
+    if(user.Protectors.includes(existingPhone)) {
+          return "<div style='color:red;width:100%;height:100%;display:flex;justify-content:center;align-items:center;font-size:50px;'>Ya eres protector de este usuario!<div>";
+
+    }
+
     user.Protectors.push(existingPhone);
 
     console.log("Protegidos post-add: " + user.Protectors)
@@ -90,7 +96,7 @@ export class UsersService {
     this.userRepository.save(user);
     this.phoneRepository.save(existingPhone);
 
-    return 1;
+    return "<div style='color:green;width:100%;height:100%;display:flex;justify-content:center;align-items:center;font-size:50px;'>Protector añadido con éxito!<div>";
   }
 
   findAll() {
