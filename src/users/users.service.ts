@@ -226,7 +226,7 @@ export class UsersService {
     let newUser = await this.userRepository.save(user);
     let resp = await this.userRepository.findOne({
       where: { User_ID: newUser.User_ID },
-      relations: ['Phone', 'Diabetes', 'Blood_Type', 'Alergies', 'Ailments']
+      relations: ['Phone', 'Diabetes', 'Blood_Type', 'Alergies', 'Ailments', 'Protectors']
     })
     console.log('resp: ' + JSON.stringify(resp));
     return newUser;
