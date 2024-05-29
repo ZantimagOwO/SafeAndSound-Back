@@ -73,4 +73,9 @@ export class UsersController {
     let user = User.jsonToUser(userData);
     return this.usersService.update(user);
   }
+
+  @Get(':id/buttons')
+  getButtons(@Param('id') id: string) {
+    return this.usersService.getButtons(+id);
+  }
 }

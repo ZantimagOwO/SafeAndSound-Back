@@ -173,7 +173,7 @@ export class UsersService {
   async login(username: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { Username: username, Password: password },
-      relations: ['Phone', 'Ailments', 'Alergies', 'Blood_Type', 'Diabetes'],
+      relations: ['Phone', 'Ailments', 'Alergies', 'Blood_Type', 'Diabetes', 'Buttons'],
     });
 
     console.log(user);
@@ -234,5 +234,19 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async getButtons(id: number) {
+
+    let user = await this.userRepository.findOne({
+      where: { User_ID: id },
+    relations: ['Buttons'],})
+
+    if(!user){
+      return "No existe ese usuario"
+    }
+
+    return user.Buttons
+
   }
 }
