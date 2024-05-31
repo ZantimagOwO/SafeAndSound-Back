@@ -7,10 +7,10 @@ export class Button {
   @PrimaryGeneratedColumn()
   Button_ID: number;
 
-  @Column()
+  @Column({nullable: false})
   Button_Name: string;
 
-  @Column()
+  @Column({nullable: false})
   Button_Tlf: string;
 
   @Column()

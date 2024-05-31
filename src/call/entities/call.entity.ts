@@ -20,8 +20,6 @@ export class Call {
   @Column()
   Longitude: number;
 
-  
-
   @ManyToMany(() => Alergy)
   @JoinTable()
   Alergies: Alergy[];
