@@ -1,6 +1,6 @@
 import { Ailment } from './../ailment/entities/ailment.entity';
 import { Phone } from './../phone/entities/phone.entity';
-import { Injectable } from '@nestjs/common';
+import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Alergy } from '../alergy/entities/alergy.entity';
 import { BloodType } from '../blood_type/entities/blood_type.entity';
 import { Diabetes } from '../diabetes/entities/diabetes.entity';
+import { HTTP_CODE_METADATA } from '@nestjs/common/constants';
 
 @Injectable()
 export class UsersService {
@@ -178,9 +179,10 @@ export class UsersService {
 
     console.log(user);
 
-    if (!user) {
-      return null;
-    }
+  if (!user) {
+    throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+  }
+
 
     user.Password = null;
     return user;
@@ -248,5 +250,10 @@ export class UsersService {
 
     return user.Buttons
 
+  }
+
+  @HttpCode(HttpStatus.NOT_FOUND)
+  notFound(): null{
+    return;
   }
 }
