@@ -1,20 +1,45 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { BloodType } from "../../blood_type/entities/blood_type.entity";
-import { Button } from "../../button/entities/button.entity";
-import { Alergy } from "../../alergy/entities/alergy.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { BloodType } from '../../blood_type/entities/blood_type.entity';
+import { Button } from '../../button/entities/button.entity';
+import { Alergy } from '../../alergy/entities/alergy.entity';
 import { Ailment } from '../../ailment/entities/ailment.entity';
-import { Phone } from "../../phone/entities/phone.entity";
-import { Diabetes } from "../../diabetes/entities/diabetes.entity";
+import { Phone } from '../../phone/entities/phone.entity';
+import { Diabetes } from '../../diabetes/entities/diabetes.entity';
+import * as CryptoJS from 'crypto-js';
+
+const secretKey: string = '].uW?yy(`rJv85xmb6s)4_2*y2MXAf';
+
+const iv : string = CryptoJS.enc.Hex.parse('78ACDA6786CAC6876456ACF');
+
+export const encryptDecryptTransformer = {
+  to: (value: string) => {
+    return CryptoJS.MD5(value).toString();
+  },
+  from: (value: string) => {
+    return value
+  },
+};
 
 @Entity()
 export class User {
+
 
   static readonly BLOOD_GROUP_TYPES = ['A', 'B', 'AB', 'O'];
 
   @PrimaryGeneratedColumn()
   User_ID: number;
 
-  @Column({ unique: true, nullable: false})
+  @Column({ unique: true, nullable: false })
   DNI: string;
 
   @Column()
@@ -26,7 +51,9 @@ export class User {
   @Column()
   Surname: string;
 
-  @Column()
+  @Column({
+    transformer: encryptDecryptTransformer,
+  })
   Password: string;
 
   @Column({ nullable: true })
@@ -76,7 +103,7 @@ export class User {
     bType.RH = json.RH;
     user.Blood_Type = bType;
 
-    console.log("bg found: " + JSON.stringify(bType));
+    console.log('bg found: ' + JSON.stringify(bType));
 
     if (json.Phone) {
       let p = new Phone();

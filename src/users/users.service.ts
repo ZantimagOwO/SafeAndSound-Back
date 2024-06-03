@@ -1,15 +1,21 @@
 import { Ailment } from './../ailment/entities/ailment.entity';
 import { Phone } from './../phone/entities/phone.entity';
-import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { User, encryptDecryptTransformer } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Alergy } from '../alergy/entities/alergy.entity';
 import { BloodType } from '../blood_type/entities/blood_type.entity';
 import { Diabetes } from '../diabetes/entities/diabetes.entity';
 import { HTTP_CODE_METADATA } from '@nestjs/common/constants';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable()
 export class UsersService {
@@ -172,17 +178,28 @@ export class UsersService {
   }
 
   async login(username: string, password: string): Promise<User> {
+
+    let p = encryptDecryptTransformer.to(password);
+
+    console.log(p);
+
     const user = await this.userRepository.findOne({
-      where: { Username: username, Password: password },
-      relations: ['Phone', 'Ailments', 'Alergies', 'Blood_Type', 'Diabetes', 'Buttons'],
+      where: { Username: username },
+      relations: [
+        'Phone',
+        'Ailments',
+        'Alergies',
+        'Blood_Type',
+        'Diabetes',
+        'Buttons',
+      ],
     });
 
     console.log(user);
 
-  if (!user) {
-    throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-  }
-
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
 
     user.Password = null;
     return user;
@@ -228,8 +245,15 @@ export class UsersService {
     let newUser = await this.userRepository.save(user);
     let resp = await this.userRepository.findOne({
       where: { User_ID: newUser.User_ID },
-      relations: ['Phone', 'Diabetes', 'Blood_Type', 'Alergies', 'Ailments', 'Protectors']
-    })
+      relations: [
+        'Phone',
+        'Diabetes',
+        'Blood_Type',
+        'Alergies',
+        'Ailments',
+        'Protectors',
+      ],
+    });
     console.log('resp: ' + JSON.stringify(resp));
     return newUser;
   }
@@ -239,21 +263,20 @@ export class UsersService {
   }
 
   async getButtons(id: number) {
-
     let user = await this.userRepository.findOne({
       where: { User_ID: id },
-    relations: ['Buttons'],})
+      relations: ['Buttons'],
+    });
 
-    if(!user){
-      return "No existe ese usuario"
+    if (!user) {
+      return 'No existe ese usuario';
     }
 
-    return user.Buttons
-
+    return user.Buttons;
   }
 
   @HttpCode(HttpStatus.NOT_FOUND)
-  notFound(): null{
+  notFound(): null {
     return;
   }
 }
